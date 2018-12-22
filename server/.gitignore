@@ -1,0 +1,24 @@
+# Compiled sources #
+####################
+*.class
+
+# Packages #
+############
+*.zip
+*.gz
+*.jar
+*.tar
+
+# Logs and dbs #
+################
+*.log
+*.sqlite
+
+# Ansible #
+###########
+ansible_vault_password.txt
+
+# Vagrant #
+###########
+.vagrant
+
