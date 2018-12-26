@@ -77,7 +77,6 @@ public class Authenticater {
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("POST");
         headers.assignToHttpUrlConnection(httpURLConnection);
-//        httpURLConnection.setRequestProperty("X-AlertMe-Client", );
         System.out.println("777");
         httpURLConnection.setDoOutput(true);
         System.out.println("778");
