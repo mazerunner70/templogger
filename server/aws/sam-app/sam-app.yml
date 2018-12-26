@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  
+  JavaJarName:
+    Type: String
+    Default: ./logger-1.0-SNAPSHOT.jar
+
+Resources:
+  TempLoggerDbTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "Timestamp"
+          AttributeType: "N"
+
+      KeySchema:
+        - AttributeName: "Timestamp"
+          KeyType: "HASH"
+      BillingMode: "PROVISIONED"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "1"
+        WriteCapacityUnits: "1"
+  TempLoggerLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./logger-1.0-SNAPSHOT.jar
+      Handler: uk.co.ameth.aws.example.MainHandler
+      Role: !GetAtt TempLoggerLambdaRole.Arn
+      Runtime: java8
+      Timeout: 8
+  TempLoggerLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: ["sts:AssumeRole"]
+            Principal: 
+              Service: "lambda.amazonaws.com"
+Outputs:
+  DbTable:
+    Description: 'Database table to record readings in'
+    Value: !Ref TempLoggerDbTable
+
